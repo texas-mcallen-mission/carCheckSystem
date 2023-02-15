@@ -51,6 +51,12 @@ function mergeConfigs(): configOptions {
     return output
 }
 
+function testerBoi() {
+    let responseSheet = new SheetData(new RawSheetData(responseConfig))
+
+    console.log(responseSheet.getKeys())
+}
+
 function runUpdates(): void {
     const liveConfig = mergeConfigs()
     // store start time for logging, also to make sure we don't overrun execution time.
@@ -124,7 +130,6 @@ function runUpdates(): void {
     };
 
 
-    let presentationCache: manyPresentations = {};
 
 
     for (let rawResponse of responseData.data) {
@@ -153,6 +158,9 @@ function runUpdates(): void {
                 console.error("unable to find data for " + response.area_name);
             }
 
+            pulledRows.push(response[iterantKey])
+            response["pulled"] = true
+            rowData.push(response)
 
 
 
