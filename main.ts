@@ -129,7 +129,7 @@ function runUpdates(): void {
         "combined_names": "combinedNames"
     };
 
-
+    //WYLO need to get the IMOS more hardcoded & figure out what to keep; should be done with the pulling stuff soon
 
 
     for (let rawResponse of responseData.data) {
