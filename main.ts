@@ -147,13 +147,14 @@ function runUpdates(): void {
                 // console.log(contactDataKeyed)
                 let areaInfo = contactDataKeyed[response.area_name][0];
                 // copies the data from contactData to the keys used by this one to store the same values
-                for (let key in contactData_keymap) {
-                    if (Object.prototype.hasOwnProperty.call(areaInfo, contactData_keymap[key])) {
-                        let data = areaInfo[contactData_keymap[key]];
-                        response[key] = data;
-                        IMOS_output[key] = data;
-                    }
-                }
+                response = {...response,...areaInfo}
+                // for (let key in contactData_keymap) {
+                //     if (Object.prototype.hasOwnProperty.call(areaInfo, contactData_keymap[key])) {
+                //         let data = areaInfo[contactData_keymap[key]];
+                //         response[key] = data;
+                //         IMOS_output[key] = data;
+                //     }
+                // }
             } else {
                 console.error("unable to find data for " + response.area_name);
             }
