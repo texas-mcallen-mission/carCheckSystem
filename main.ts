@@ -58,7 +58,7 @@ function mergeConfigs_(): configOptions {
 // }
 
 function convertToAreaId_(input: string): string{
-    return input.split("@")[0]
+    return "A"+input.split("@")[0]
 }
 
 function runUpdates(): void {
