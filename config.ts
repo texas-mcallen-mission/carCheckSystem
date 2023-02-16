@@ -63,7 +63,7 @@ const responseConfig: sheetDataEntry = {
         zone: 6,
         areaId: 7,
         imos_vin: 8,
-        imos_make: 9,
+        hasVehicle : 9,
         imos_mileage: 10,
         combined_names: 11
     }

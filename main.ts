@@ -129,7 +129,7 @@ function runUpdates(): void {
         "area_name": "areaName",
         "zone": "zone",
         "imos_vin": "vinLast8",
-        "imos_make":"vehicleMiles",
+        "hasVehicle":"hasVehicle",
         "imos_mileage": "vehicleMiles",
         "combined_names": "combinedNames",
         // "areaId":"areaId"
