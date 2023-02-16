@@ -46,19 +46,23 @@ function updateAreaNames() {
 
 }
 
-function mergeConfigs(): configOptions {
+function mergeConfigs_(): configOptions {
     const output = { ...config, ...GITHUB_SECRET_DATA }
     return output
 }
 
-function testerBoi() {
-    let responseSheet = new SheetData(new RawSheetData(responseConfig))
+// function testerBoi() {
+//     let responseSheet = new SheetData(new RawSheetData(responseConfig))
 
-    console.log(responseSheet.getKeys())
+//     console.log(responseSheet.getKeys())
+// }
+
+function convertToAreaId_(input: string): string{
+    return input.split("@")[0]
 }
 
 function runUpdates(): void {
-    const liveConfig = mergeConfigs()
+    const liveConfig = mergeConfigs_()
     // store start time for logging, also to make sure we don't overrun execution time.
     let startTime = new Date();
     let softCutoffInMinutes = liveConfig.softCutoffInMinutes;
@@ -125,8 +129,10 @@ function runUpdates(): void {
         "area_name": "areaName",
         "zone": "zone",
         "imos_vin": "vinLast8",
+        "imos_make":"vehicleMiles",
         "imos_mileage": "vehicleMiles",
-        "combined_names": "combinedNames"
+        "combined_names": "combinedNames",
+        // "areaId":"areaId"
     };
 
     //WYLO need to get the IMOS more hardcoded & figure out what to keep; should be done with the pulling stuff soon
@@ -147,14 +153,15 @@ function runUpdates(): void {
                 // console.log(contactDataKeyed)
                 let areaInfo = contactDataKeyed[response.area_name][0];
                 // copies the data from contactData to the keys used by this one to store the same values
-                response = {...response,...areaInfo}
-                // for (let key in contactData_keymap) {
-                //     if (Object.prototype.hasOwnProperty.call(areaInfo, contactData_keymap[key])) {
-                //         let data = areaInfo[contactData_keymap[key]];
-                //         response[key] = data;
-                //         IMOS_output[key] = data;
-                //     }
-                // }
+                // response = {...response,...areaInfo}
+                for (let key in contactData_keymap) {
+                    if (Object.prototype.hasOwnProperty.call(areaInfo, contactData_keymap[key])) {
+                        let data = areaInfo[contactData_keymap[key]];
+                        response[key] = data;
+                        IMOS_output[key] = data;
+                    }
+                }
+                response.areaId = convertToAreaId_(areaInfo.areaEmail)
             } else {
                 console.error("unable to find data for " + response.area_name);
             }

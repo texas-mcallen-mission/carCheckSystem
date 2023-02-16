@@ -4,7 +4,8 @@ interface carCheckEntry extends kiDataEntry {
     pulled: boolean,
     month: string,
     year: string | number,
-    area_name:string
+    area_name:string,
+    areaId:string
 }
 
 function convertKiEntryToCarCheckEntry_(data: kiDataEntry) {
@@ -15,6 +16,7 @@ function convertKiEntryToCarCheckEntry_(data: kiDataEntry) {
         month: '',
         year: '',
         area_name: '',
+        areaId:''
     }
     output = { ...output, ...data }
     return output

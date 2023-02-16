@@ -1,5 +1,4 @@
-
-const config:configOptions = {
+const config: configOptions = {
     disableMarkingPulled: false,
     enable_cacheLock: true,
     softCutoffInMinutes: 25,
@@ -10,12 +9,12 @@ const config:configOptions = {
 };
 
 interface configOptions {
-    disableMarkingPulled:boolean
-    enable_cacheLock:boolean
-    softCutoffInMinutes:number
-    debug_mode:boolean
-    response_form_url:string
-    areaNameQuestion:string
+    disableMarkingPulled: boolean
+    enable_cacheLock: boolean
+    softCutoffInMinutes: number
+    debug_mode: boolean
+    response_form_url: string
+    areaNameQuestion: string
 }
 
 const contactConfig: sheetDataEntry = {
@@ -57,10 +56,16 @@ const responseConfig: sheetDataEntry = {
     initialColumnOrder: {
         timestamp: 0,
         email: 1,
-        pulled:2,
+        pulled: 2,
         month: 3,
         year: 4,
-        area_name:5
+        area_name: 5,
+        zone: 6,
+        areaId: 7,
+        imos_vin: 8,
+        imos_make: 9,
+        imos_mileage: 10,
+        combined_names: 11
     }
 };
 
@@ -71,4 +76,3 @@ const sheetCoreConfig: sheetCoreConfigInfo = {
 
 
 };
-
