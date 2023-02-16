@@ -1,0 +1,33 @@
+{
+  "name": "carchecksystem",
+  "version": "1.0.0",
+  "description": "Car Check database manager",
+  "main": "main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/texas-mcallen-mission/carCheckSystem.git"
+  },
+  "keywords": [
+    "car",
+    "check",
+    "IMOS"
+  ],
+  "author": "harrierPigeon,ElderLoForte",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/texas-mcallen-mission/carCheckSystem/issues"
+  },
+  "homepage": "https://github.com/texas-mcallen-mission/carCheckSystem#readme",
+  "dependencies": {
+    "@types/google-apps-script": "^1.0.57"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "eslint": "^8.34.0",
+    "typescript": "^4.9.5"
+  }
+}
