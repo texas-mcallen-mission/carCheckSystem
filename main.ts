@@ -134,7 +134,7 @@ function runUpdates(): void {
         "combined_names": "combinedNames",
         // "areaId":"areaId"
     };
-
+    // changing to commit and sync
     //WYLO need to get the IMOS more hardcoded & figure out what to keep; should be done with the pulling stuff soon
 
 
