@@ -132,7 +132,7 @@ function runUpdates(): void {
         "hasVehicle":"hasVehicle",
         "imos_mileage": "vehicleMiles",
         "combined_names": "combinedNames",
-        // "areaId":"areaId"
+        // "areaId":"areaId" // in the future, when we have area id's in contacts, we can use that instead.  At the moment, we don't.  :/
     };
     // changing to commit and sync
     //WYLO need to get the IMOS more hardcoded & figure out what to keep; should be done with the pulling stuff soon
