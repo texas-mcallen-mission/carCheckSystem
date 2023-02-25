@@ -175,7 +175,8 @@ function runUpdates(): void {
             } else {
                 response["pulled"] = true;
             }
-            rowData.push(response);
+            IMOS_output[itkey] = rawResponse[itkey]
+            rowData.push(IMOS_output);
 
 
 
