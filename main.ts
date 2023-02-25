@@ -115,7 +115,7 @@ function runUpdates(): void {
     if (minRow > 0) {
         responseData.removeSmaller(iterantKey, minRow);
     }
-    let pulledRows: number[] = [];
+    // let pulledRows: number[] = [];
     let rowData: kiDataEntry[] = [];
 
 
@@ -137,6 +137,7 @@ function runUpdates(): void {
     // changing to commit and sync
     //WYLO need to get the IMOS more hardcoded & figure out what to keep; should be done with the pulling stuff soon
 
+    const itkey = responseSheet.iterantKey
 
     for (let rawResponse of responseData.data) {
         // Make sure we're not going to run out of time and crash and burn.
@@ -166,7 +167,8 @@ function runUpdates(): void {
                 console.error("unable to find data for " + response.area_name);
             }
 
-            pulledRows.push(response[iterantKey])
+
+            // pulledRows.push(response[iterantKey])
             response["pulled"] = true
             rowData.push(response)
 
@@ -183,18 +185,19 @@ function runUpdates(): void {
     // sortStoreRSD.insertData(newData);
 
     let column = responseSheet.getIndex("pulled");
-    for (let i = 0; i < pulledRows.length; i++) {
-        let targetRow = pulledRows[i];
-        let data = rowData[i];
-        // entry *might* need an offset.
-        // JUMPER comment
-        // let output:any[] = [true]
-        if (liveConfig.disableMarkingPulled == true) {
-            data["pulled"] = [GITHUB_DATA.commit_sha.slice(0, 8) + "WORD"];
-        }
-        // responseSheet.directEdit(entry + 1, column, [output], true); // directEdit is zero-Indexed even though sheets is 1-indexed.
-        responseSheet.directModify(targetRow + 1, data);
-    }
+    responseSheet.updateRows(rowData)
+    // for (let i = 0; i < pulledRows.length; i++) {
+    //     let targetRow = pulledRows[i];
+    //     let data = rowData[i];
+    //     // entry *might* need an offset.
+    //     // JUMPER comment
+    //     // let output:any[] = [true]
+    //     if (liveConfig.disableMarkingPulled == true) {
+    //         data["pulled"] = [GITHUB_DATA.commit_sha.slice(0, 8) + "WORD"];
+    //     }
+    //     // responseSheet.directEdit(entry + 1, column, [output], true); // directEdit is zero-Indexed even though sheets is 1-indexed.
+    //     responseSheet.directModify(targetRow + 1, data);
+    // }
 
 
     if (!isSecondary) {
