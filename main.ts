@@ -47,8 +47,8 @@ function updateAreaNames() {
 }
 
 function mergeConfigs_(): configOptions {
-    const output = { ...config, ...GITHUB_SECRET_DATA }
-    return output
+    const output = { ...config, ...GITHUB_SECRET_DATA };
+    return output;
 }
 
 // function testerBoi() {
@@ -57,12 +57,12 @@ function mergeConfigs_(): configOptions {
 //     console.log(responseSheet.getKeys())
 // }
 
-function convertToAreaId_(input: string): string{
-    return "A"+input.split("@")[0]
+function convertToAreaId_(input: string): string {
+    return "A" + input.split("@")[0];
 }
 
 function runUpdates(): void {
-    const liveConfig = mergeConfigs_()
+    const liveConfig = mergeConfigs_();
     // store start time for logging, also to make sure we don't overrun execution time.
     let startTime = new Date();
     let softCutoffInMinutes = liveConfig.softCutoffInMinutes;
@@ -90,7 +90,7 @@ function runUpdates(): void {
     // load up sheetData
 
     const responseSheet = new SheetData(new RawSheetData(responseConfig));
-    
+
     const contactSheet = new SheetData(new RawSheetData(contactConfig));
 
     const rawResponses = responseSheet.getData();
@@ -129,7 +129,7 @@ function runUpdates(): void {
         "area_name": "areaName",
         "zone": "zone",
         "imos_vin": "vinLast8",
-        "hasVehicle":"hasVehicle",
+        "hasVehicle": "hasVehicle",
         "imos_mileage": "vehicleMiles",
         "combined_names": "combinedNames",
         // "areaId":"areaId" // in the future, when we have area id's in contacts, we can use that instead.  At the moment, we don't.  :/
@@ -137,7 +137,7 @@ function runUpdates(): void {
     // changing to commit and sync
     //WYLO need to get the IMOS more hardcoded & figure out what to keep; should be done with the pulling stuff soon
 
-    const itkey = responseSheet.iterantKey
+    const itkey = responseSheet.iterantKey;
 
     for (let rawResponse of responseData.data) {
         // Make sure we're not going to run out of time and crash and burn.
@@ -162,15 +162,20 @@ function runUpdates(): void {
                         IMOS_output[key] = data;
                     }
                 }
-                response.areaId = convertToAreaId_(areaInfo.areaEmail)
+                response.areaId = convertToAreaId_(areaInfo.areaEmail);
             } else {
                 console.error("unable to find data for " + response.area_name);
             }
 
 
             // pulledRows.push(response[iterantKey])
-            response["pulled"] = true
-            rowData.push(response)
+            if (liveConfig.disableMarkingPulled == true) {
+                // @ts-expect-error this is not necessarily the best idea, but I need something to test with
+                response["pulled"] = [GITHUB_DATA.commit_sha.slice(0, 8) + "WORD"];
+            } else {
+                response["pulled"] = true;
+            }
+            rowData.push(response);
 
 
 
@@ -185,7 +190,7 @@ function runUpdates(): void {
     // sortStoreRSD.insertData(newData);
 
     let column = responseSheet.getIndex("pulled");
-    responseSheet.updateRows(rowData)
+    responseSheet.updateRows(rowData);
     // for (let i = 0; i < pulledRows.length; i++) {
     //     let targetRow = pulledRows[i];
     //     let data = rowData[i];
