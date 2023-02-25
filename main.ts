@@ -179,8 +179,7 @@ function runUpdates(): void {
             rowData.push(IMOS_output);
 
 
-
-
+            // responseSheet.updateRow(IMOS_output,rawResponse[itkey])
 
         } else {
             break;
