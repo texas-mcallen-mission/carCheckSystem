@@ -47,8 +47,8 @@ function updateAreaNames() {
 }
 
 function mergeConfigs_(): configOptions {
-    const output = { ...config, ...GITHUB_SECRET_DATA }
-    return output
+    const output = { ...config, ...GITHUB_SECRET_DATA };
+    return output;
 }
 
 // function testerBoi() {
@@ -57,12 +57,12 @@ function mergeConfigs_(): configOptions {
 //     console.log(responseSheet.getKeys())
 // }
 
-function convertToAreaId_(input: string): string{
-    return "A"+input.split("@")[0]
+function convertToAreaId_(input: string): string {
+    return "A" + input.split("@")[0];
 }
 
 function runUpdates(): void {
-    const liveConfig = mergeConfigs_()
+    const liveConfig = mergeConfigs_();
     // store start time for logging, also to make sure we don't overrun execution time.
     let startTime = new Date();
     let softCutoffInMinutes = liveConfig.softCutoffInMinutes;
@@ -90,7 +90,7 @@ function runUpdates(): void {
     // load up sheetData
 
     const responseSheet = new SheetData(new RawSheetData(responseConfig));
-    
+
     const contactSheet = new SheetData(new RawSheetData(contactConfig));
 
     const rawResponses = responseSheet.getData();
@@ -108,15 +108,16 @@ function runUpdates(): void {
 
 
     let responseData = new kiDataClass(rawResponses);
-    let iterantKey = "iterant";
 
-    responseData.addIterant(iterantKey, 0);
+    const itkey = responseSheet.iterantKey;
+
     responseData.removeMatchingByKey("pulled", [true]);
     if (minRow > 0) {
-        responseData.removeSmaller(iterantKey, minRow);
+        responseData.removeSmaller(itkey, minRow);
     }
     let pulledRows: number[] = [];
-    let rowData: kiDataEntry[] = [];
+
+    let imos_mergeData: kiDataEntry[] = [];
 
 
 
@@ -129,13 +130,13 @@ function runUpdates(): void {
         "area_name": "areaName",
         "zone": "zone",
         "imos_vin": "vinLast8",
-        "hasVehicle":"hasVehicle",
+        "hasVehicle": "hasVehicle",
         "imos_mileage": "vehicleMiles",
         "combined_names": "combinedNames",
         // "areaId":"areaId" // in the future, when we have area id's in contacts, we can use that instead.  At the moment, we don't.  :/
     };
-    // changing to commit and sync
-    //WYLO need to get the IMOS more hardcoded & figure out what to keep; should be done with the pulling stuff soon
+
+
 
 
     for (let rawResponse of responseData.data) {
@@ -147,30 +148,28 @@ function runUpdates(): void {
             if (!liveConfig.disableMarkingPulled) {
                 IMOS_output["pulled"] = true;
             }
+            IMOS_output[itkey] = rawResponse[itkey]; // sync iterants
+            
 
             // adding in IMOS data
             if (Object.prototype.hasOwnProperty.call(contactDataKeyed, response.area_name)) {
                 // console.log(contactDataKeyed)
                 let areaInfo = contactDataKeyed[response.area_name][0];
                 // copies the data from contactData to the keys used by this one to store the same values
-                // response = {...response,...areaInfo}
+                // basically a look up table because I decided to be dumb and not keep the same keys for both...
                 for (let key in contactData_keymap) {
+                    console.log("breakpoint")
                     if (Object.prototype.hasOwnProperty.call(areaInfo, contactData_keymap[key])) {
-                        let data = areaInfo[contactData_keymap[key]];
-                        response[key] = data;
+                        const data = areaInfo[contactData_keymap[key]];
                         IMOS_output[key] = data;
                     }
                 }
-                response.areaId = convertToAreaId_(areaInfo.areaEmail)
+                response.areaId = convertToAreaId_(areaInfo.areaEmail);
             } else {
                 console.error("unable to find data for " + response.area_name);
             }
 
-            pulledRows.push(response[iterantKey])
-            response["pulled"] = true
-            rowData.push(response)
-
-
+            imos_mergeData.push(IMOS_output);
 
 
 
@@ -180,21 +179,10 @@ function runUpdates(): void {
     }
 
 
-    // sortStoreRSD.insertData(newData);
-
     let column = responseSheet.getIndex("pulled");
-    for (let i = 0; i < pulledRows.length; i++) {
-        let targetRow = pulledRows[i];
-        let data = rowData[i];
-        // entry *might* need an offset.
-        // JUMPER comment
-        // let output:any[] = [true]
-        if (liveConfig.disableMarkingPulled == true) {
-            data["pulled"] = [GITHUB_DATA.commit_sha.slice(0, 8) + "WORD"];
-        }
-        // responseSheet.directEdit(entry + 1, column, [output], true); // directEdit is zero-Indexed even though sheets is 1-indexed.
-        responseSheet.directModify(targetRow + 1, data);
-    }
+    console.log("breakpoint",imos_mergeData)
+    responseSheet.updateRows(imos_mergeData);
+
 
 
     if (!isSecondary) {

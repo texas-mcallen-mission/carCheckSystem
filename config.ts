@@ -21,6 +21,7 @@ const contactConfig: sheetDataEntry = {
     tabName: "Contact Data",
     headerRow: 0,
     includeSoftcodedColumns: true,
+    use_iterant: true,
     initialColumnOrder: {
         dateContactGenerated: 0,
         areaEmail: 1,
@@ -53,6 +54,7 @@ const responseConfig: sheetDataEntry = {
     tabName: "Responses",
     headerRow: 0,
     includeSoftcodedColumns: true,
+    use_iterant: true,
     initialColumnOrder: {
         timestamp: 0,
         email: 1,
