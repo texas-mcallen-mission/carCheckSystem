@@ -108,15 +108,16 @@ function runUpdates(): void {
 
 
     let responseData = new kiDataClass(rawResponses);
-    let iterantKey = "iterant";
+    // let iterantKey = "iterant";
 
-    responseData.addIterant(iterantKey, 0);
+    // responseData.addIterant(iterantKey, 0);
     responseData.removeMatchingByKey("pulled", [true]);
-    if (minRow > 0) {
-        responseData.removeSmaller(iterantKey, minRow);
-    }
+    // if (minRow > 0) {
+    //     responseData.removeSmaller(iterantKey, minRow);
+    // }
     // let pulledRows: number[] = [];
     let rowData: kiDataEntry[] = [];
+    let imos_mergeData: kiDataEntry[] = [];
 
 
 
@@ -148,6 +149,8 @@ function runUpdates(): void {
             if (!liveConfig.disableMarkingPulled) {
                 IMOS_output["pulled"] = true;
             }
+            IMOS_output[itkey] = rawResponse[itkey]; // sync iterants
+            
 
             // adding in IMOS data
             if (Object.prototype.hasOwnProperty.call(contactDataKeyed, response.area_name)) {
@@ -156,9 +159,10 @@ function runUpdates(): void {
                 // copies the data from contactData to the keys used by this one to store the same values
                 // response = {...response,...areaInfo}
                 for (let key in contactData_keymap) {
+                    console.log("breakpoint")
                     if (Object.prototype.hasOwnProperty.call(areaInfo, contactData_keymap[key])) {
-                        let data = areaInfo[contactData_keymap[key]];
-                        response[key] = data;
+                        const data = areaInfo[contactData_keymap[key]];
+                        // response[key] = data;
                         IMOS_output[key] = data;
                     }
                 }
@@ -168,14 +172,14 @@ function runUpdates(): void {
             }
 
 
-            // pulledRows.push(response[iterantKey])
-            if (liveConfig.disableMarkingPulled == true) {
-                // @ts-expect-error this is not necessarily the best idea, but I need something to test with
-                response["pulled"] = [GITHUB_DATA.commit_sha.slice(0, 8) + "WORD"];
-            } else {
-                response["pulled"] = true;
-            }
-            IMOS_output[itkey] = rawResponse[itkey]
+            // // pulledRows.push(response[iterantKey])
+            // if (liveConfig.disableMarkingPulled == true) {
+            //     // @ts-expect-error this is not necessarily the best idea, but I need something to test with
+            //     response["pulled"] = [GITHUB_DATA.commit_sha.slice(0, 8) + "WORD"];
+            // } else {
+            //     response["pulled"] = true;
+            // }
+            
             rowData.push(IMOS_output);
 
 
@@ -190,19 +194,21 @@ function runUpdates(): void {
     // sortStoreRSD.insertData(newData);
 
     let column = responseSheet.getIndex("pulled");
-    responseSheet.updateRows(rowData);
-    // for (let i = 0; i < pulledRows.length; i++) {
-    //     let targetRow = pulledRows[i];
-    //     let data = rowData[i];
-    //     // entry *might* need an offset.
-    //     // JUMPER comment
-    //     // let output:any[] = [true]
-    //     if (liveConfig.disableMarkingPulled == true) {
-    //         data["pulled"] = [GITHUB_DATA.commit_sha.slice(0, 8) + "WORD"];
-    //     }
-    //     // responseSheet.directEdit(entry + 1, column, [output], true); // directEdit is zero-Indexed even though sheets is 1-indexed.
-    //     responseSheet.directModify(targetRow + 1, data);
-    // }
+    console.log("breakpoint",imos_mergeData)
+    responseSheet.updateRows(imos_mergeData);
+    
+    // // for (let i = 0; i < pulledRows.length; i++) {
+    // //     let targetRow = pulledRows[i];
+    // //     let data = rowData[i];
+    // //     // entry *might* need an offset.
+    // //     // JUMPER comment
+    // //     // let output:any[] = [true]
+    // //     if (liveConfig.disableMarkingPulled == true) {
+    // //         data["pulled"] = [GITHUB_DATA.commit_sha.slice(0, 8) + "WORD"];
+    // //     }
+    // //     // responseSheet.directEdit(entry + 1, column, [output], true); // directEdit is zero-Indexed even though sheets is 1-indexed.
+    // //     responseSheet.directModify(targetRow + 1, data);
+    // // }
 
 
     if (!isSecondary) {
