@@ -42,6 +42,8 @@ Before we get any further into the sheet, we need to get area data in and workin
 
 ### The Apps Script Environment
 
+Okay, so you don't really need to know that much about this to get around and get this started, but here's a basic overview:
+
 
 
 
