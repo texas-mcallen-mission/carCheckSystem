@@ -1,14 +1,14 @@
 //@ts-check
 // Written by Elder Lo Forte
 
-function importContactsV2(allSheetData: manySheetDatas): void {
+function importContactsV2(contactDataSheet:SheetData): void {
 
     console.time('Execution Time');
 
     //const allSheetData : manySheetDatas= constructSheetDataV3(["closedAreas", "contact"])
-
-    const closedAreasSheet: SheetData = allSheetData.closedAreas;
-    const contactDataSheet: SheetData = allSheetData.contact;
+    // don't need closed areas
+    // const closedAreasSheet: SheetData = allSheetData.closedAreas;
+    // const contactDataSheet: SheetData = allSheetData.contact;
 
     // gets old data and new data
     const ogDataClass = new kiDataClass(contactDataSheet.getData());
@@ -33,46 +33,15 @@ function importContactsV2(allSheetData: manySheetDatas): void {
     const leftovers: kiDataEntry[] = ogDataClass.end;
 
     // if nothing changes dont push it
-    if (leftovers.length > 0) {
-        closedAreasSheet.appendData(leftovers);
-    }
+    // if (leftovers.length > 0) {
+    //     closedAreasSheet.appendData(leftovers);
+    // }
 
     console.timeEnd('Execution Time');
 
 }
 
-function testAllClosedAreas() {
-    const allSheetData: manySheetDatas = constructSheetDataV3(["closedAreas", "contact", "data"]);
-    getAllClosedAreas(allSheetData);
-}
-/**
- * one time thing you give it allSheetData and it gets all the closed areas... and appends it to Closed Area Sheet
- *
- * @param {*} allSheetData
- */
-function getAllClosedAreas(allSheetData) {
-    importContactsV2(allSheetData); // updates contact information
 
-    // gets all of the data
-    const newContactData = new kiDataClass(allSheetData.contact.getData()).getDataFromKey("areaID");
-    const ogClosedData = new kiDataClass(allSheetData.closedAreas.getData()).getDataFromKey("areaID");
-    const kiData = new kiDataClass(allSheetData.data.getData());
-
-    // removes douplicate areaID's
-    kiData.removeMatchingByKey("areaID", newContactData);
-    kiData.removeMatchingByKey("areaID", ogClosedData);
-
-    const groupedData: keyedKiDataEntries = kiData.groupByKey("areaID"); // groups it all
-
-    const closedMostRecent: kiDataEntry[] = [];
-    for (const entry in groupedData) { // loops through the groupedData and gets the newest kiDataEntry
-        const mostRecent: kiDataEntry = getMostRecentKiEntryByDateKey_(groupedData[entry], "kiDate");
-        mostRecent.deletionDate = mostRecent.kiDate;
-        closedMostRecent.push(mostRecent);
-    }
-
-    allSheetData.closedAreas.appendData(closedMostRecent);
-}
 
 /**
  * gets the most recent kiDataEntry given an array and a key
@@ -245,3 +214,44 @@ function isTrainer(position: string): boolean {
             return false;
     } // end switch
 } // end isTrainer
+
+interface contactEntry extends kiDataEntry {
+    dateContactGenerated: string,
+    areaEmail: string,
+    areaName: string,
+
+    name1: string,
+    position1: string,
+    isTrainer1: boolean,
+
+    name2: string,
+    position2: string,
+    isTrainer2: boolean,
+
+    name3: string,
+    position3: string,
+    isTrainer3: boolean,
+
+    district: string,
+    zone: string,
+
+    unitString: string,
+    hasMultipleUnits: boolean,
+    languageString: string,
+
+    isSeniorCouple: boolean,
+    isSisterArea: boolean,
+
+    hasVehicle?: boolean,
+    vehicleMiles: string,
+    vinLast8: string,
+
+    aptAddress: string,
+    areaID: string,
+    phoneNumber: string,
+
+    missionaryEmail1: string,
+    missionaryEmail2: string,
+    missionaryEmail3: string,
+
+}

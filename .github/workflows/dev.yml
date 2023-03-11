@@ -3,7 +3,7 @@ name: Car Check Dev
 on:
   workflow_dispatch:
   push:
-    branches: [2-incorporate-new-crud-methods]
+    branches: [add-contacts-importer]
   release:
     types: [published]
   schedule:
