@@ -2,6 +2,7 @@
 
 function run_importContacts() {
     let contactSheet = new SheetData(new RawSheetData(contactConfig))
+    importContactsV2(contactSheet)
 }
 
 function scheduler() {
