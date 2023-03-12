@@ -54,20 +54,49 @@ Okay, so you don't really need to know that much about this to get around and ge
 
 ![Apps Script Environment Landing Page](docs/AppsScript-Environment-Start.png)
 
-On the left side, you can see the file explorer, and navigate between code files[^2].  Before we get any further, copy the URL from your form and replace the demo version with yours:
+On the left side, you can see the file explorer, and navigate between code files[^2].  
+
+## Making The Changes We Need
+
+Before we get any further, copy the URL from your form and replace the demo version with yours:
 
 ![what to replace](docs/Form-Response-Link-Replacement.png)
 
 This is how we tell the script which form to stick area names into.
 
-Next, navigate to ``aaa-shortcuts`` in the Apps Script editor- we're going to get data into your sheet, and then update the area names.
+Next, navigate to ``aaa-shortcuts`` in the Apps Script editor- we're going to get data into your sheet, and then update the area names in the Form's dropdown so that things show up.
 
 ![AAA-Shortcuts Page](docs/aaa-shortcuts.png)
 
+At the top, you can see where we run code:
 
+![Manual Execution Drop-Down](docs/First-Run-Authorization.png)
 
+We need the following scopes for these reasons:
 
+![authorization scopes](docs/First-Run-Auth-Scopes.png)
 
+| Scope | Explanation |
+| :--- | :--- |
+| Google Drive | Part of accessing Google Sheets |
+| Contacts | This is how we access the information stored about areas in your mission |
+| Google Sheets | This is where we store data |
+| Forms | Updates area names |
+| Run when not present | Automatic updates to area names, form submissions |
+
+If you click on the function name you can choose which function to execute.
+
+First, we'll run ``run_importContacts`` so that we can get your area data loaded up.  (We also use this to get some vehicle information automatically.)
+
+The first time you run anything, you'll get this lovely pop-up that asks for authorization.  You'll need to approve it in order to continue.
+
+![Authorization pop-up](docs/appsscript-run-code-manually.png)
+
+![Import Contacts Execution Log](docs/Import-Contacts-Execution-Log.png)
+
+> *If you get errors, please ensure that you're running this as your mission office's missionary.org email account, and that [Google Contacts](https://contacts.google.com) has a label called ``IMOS Roster`` with contacts in it.  If you still have problems, please open an issue on [this repo](https://github.com/texas-mcallen-mission/carCheckSystem) and we'd love to help!*
+
+Because doing work automatically is a bit of a pain, we've 
 
 [^1] missionary names, zones and districts, and some vehicle information.
 
