@@ -66,6 +66,8 @@ This is how we tell the script which form to stick area names into.
 
 Next, navigate to ``aaa-shortcuts`` in the Apps Script editor- we're going to get data into your sheet, and then update the area names in the Form's dropdown so that things show up.
 
+
+
 ![AAA-Shortcuts Page](docs/aaa-shortcuts.png)
 
 At the top, you can see where we run code:
@@ -96,8 +98,57 @@ The first time you run anything, you'll get this lovely pop-up that asks for aut
 
 > *If you get errors, please ensure that you're running this as your mission office's missionary.org email account, and that [Google Contacts](https://contacts.google.com) has a label called ``IMOS Roster`` with contacts in it.  If you still have problems, please open an issue on [this repo](https://github.com/texas-mcallen-mission/carCheckSystem) and we'd love to help!*
 
-Because doing work automatically is a bit of a pain, we've 
+To manually update the area names and make sure everything works, navigate to ``main.gs`` in the sidebar and run ``updateAreaNames``.
+
+If you go to your form now, the "Area Names" dropdown should have different stuff in it[^3]!
+
+![Updated Area Name Drop-Down](docs/Areas-Got-Updated.png)
+
+Because doing work manually isn't fun (especially when you forget!) we automated it!  Go back to ``aaa-shortcuts.gs``, and run the ``scheduler`` function, and then click on the clock.  In the future, your area names will be kept up to date, and the extra data we grab from Contacts will get added to the data submitted by your missionaries.  At this point, you should be done with the Apps Script environment.
+
+## Testing
+
+Go ahead and submit a dummy response.  Fill it out, and submit it.  Then go back to the ``Responses`` tab in your Sheet.  If you've already set up automated triggers, you'll notice some information in there that wasn't included in the submission- the ``Zone``,``AreaId``,``imos_vin``,``hasVehicle``,``imos_mileage``, and ``combined_names`` columns all get data automatically added in from the ``Contact Data`` sheet, which is hidden by default. ``Pulled`` gets marked as true once that process has completed.
+
+Here's what it looks like for our demo:
+
+![Demo Responses](docs/Data-Gets-Pulled.png)
+
+## Sheets - Usage Guide
+
+### Reporting Page
+
+Everybody, including missionaries, unfortunately, doesn't do stuff quite exactly when you want, nor do they always remember to do stuff.  For that reason, we have to ensure that they did what we asked them to. Without further ado, here's the reporting tab:
+
+![Reporting Tab](docs/Reporting-Page.png)
+
+We organize data by year and month- pick the month & year you picked for your demo entry, and it will show up in here.
+
+Each zone has a progress bar that turns green once everybody with a car in that zone has submitted.
+
+### Dashboard Page
+
+This is where we view the results of our car checks.  Like the ``Reporting`` tab, it has year/month dropdowns where you can choose which year/month to view.  TBH, this is not the prettiest sheet, but it was a *massive* improvement over the previous one, and that made the office peeps really happy, so if you want to spend time beautifying it, knock yourself out.
+
+At this point, the car check system is online!  The only thing you have to do now is share it with the world and hope they don't break anything on the way.
+
+
+
+
+## Extending / Modifying Things
+
+Everything besides the ``Area Name``, ``Month``, and ``Year`` questions can be modified or deleted as you desire!  You can also add more questions- when you do, columns will automatically show up in the dashboard, but any conditional formatting or changes you might wish to the layout are left up to you to do.
+
+If you're a semi-capable programmer, all the code is available on [GitHub](https://github.com/texas-mcallen-mission/carCheckSystem) and you can fork it and mess with it from there!  We use Continuous Integration via a [workflow we built](https://github.com/texas-mcallen-mission/deploy-google-app-script-action-typescript) and built a [library that gets used in several other systems named ``sheetCore``](https://github.com/texas-mcallen-mission/sheetCore).  Nearly all the code is written in TypeScript, which has to be converted into JavaScript (we do this automatically with the above CI workflow) but that makes it way easier to maintain long-term.
+
+If you want updates in the future, if there are any, you'll need to fork the repo and then use that.  The ``sheetCore`` repo should have a guide for getting started with CI you can follow to get up to speed as well.
+
+## Notes, Footnotes
+
+So it's clear: you are the only one who will have access to this stuff- we don't make copies of your data nor do anything malicious.  If you don't believe us, the code is all right there and you can read it all.
 
 [^1] missionary names, zones and districts, and some vehicle information.
 
 [^2] In the AppsScript environment, everything is treated like a global variable- there's no concept of import/export like there is in NodeJS.
+
+[^3] We obviously can't go and put our own data in the demo, because we don't want to leak things that can get our people hurt...
