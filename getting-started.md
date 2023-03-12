@@ -114,6 +114,8 @@ Here's what it looks like for our demo:
 
 ![Demo Responses](docs/Data-Gets-Pulled.png)
 
+> ⚠️*We blanked out the email part on purpose.*
+
 ## Sheets - Usage Guide
 
 ### Reporting Page
@@ -138,6 +140,8 @@ At this point, the car check system is online!  The only thing you have to do no
 ## Extending / Modifying Things
 
 Everything besides the ``Area Name``, ``Month``, and ``Year`` questions can be modified or deleted as you desire!  You can also add more questions- when you do, columns will automatically show up in the dashboard, but any conditional formatting or changes you might wish to the layout are left up to you to do.
+
+We use a ton of Sheets' queries in our dashboards, so learning how to work with those is probably a good idea to do at some point.
 
 If you're a semi-capable programmer, all the code is available on [GitHub](https://github.com/texas-mcallen-mission/carCheckSystem) and you can fork it and mess with it from there!  We use Continuous Integration via a [workflow we built](https://github.com/texas-mcallen-mission/deploy-google-app-script-action-typescript) and built a [library that gets used in several other systems named ``sheetCore``](https://github.com/texas-mcallen-mission/sheetCore).  Nearly all the code is written in TypeScript, which has to be converted into JavaScript (we do this automatically with the above CI workflow) but that makes it way easier to maintain long-term.
 
